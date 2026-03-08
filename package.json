@@ -1,0 +1,14 @@
+{
+  "name": "ugc-maker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "drive:auth-status": "node scripts/drive-auth-status.mjs",
+    "drive:list-folders": "node scripts/drive-list-folders.mjs",
+    "drive:list-inbox": "node scripts/drive-list-inbox.mjs"
+  },
+  "dependencies": {
+    "googleapis": "^157.0.0"
+  }
+}

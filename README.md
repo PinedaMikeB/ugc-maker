@@ -10,6 +10,7 @@ Frontend-first MVP for a BreadHub-style UGC video automation workflow.
 - Script beat preview and shot mapping
 - Render queue panel
 - Backend contract section for the Java + Firebase implementation
+- CLI scripts that can read the existing Google Drive OAuth token and list folders
 
 ## Why the app starts frontend-first
 
@@ -36,6 +37,25 @@ The target folder was empty, and the workflow still needed to be shaped before h
 - `POST /api/jobs/:jobId/render`
 - `GET /api/jobs`
 - `GET /api/jobs/:jobId`
+
+## Google Drive CLI
+
+The project now includes simple CLI helpers for Drive access:
+
+```bash
+npm install
+npm run drive:auth-status
+npm run drive:list-folders
+npm run drive:list-inbox -- --folder YOUR_DRIVE_FOLDER_ID
+```
+
+Credential resolution order:
+
+1. `GOOGLE_OAUTH_CLIENT_PATH` / `GOOGLE_OAUTH_TOKEN_PATH`
+2. local `./.secrets/`
+3. sibling workspace `../eko-arms/.secrets/`
+
+Set `DRIVE_INBOX_FOLDER_ID` if you want a default inbox folder for folder-per-product polling.
 
 ## Firestore draft schema
 
