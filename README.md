@@ -47,6 +47,7 @@ npm install
 npm run drive:auth-status
 npm run drive:list-folders
 npm run drive:list-inbox -- --folder YOUR_DRIVE_FOLDER_ID
+npm run drive:list-path -- --path "/Work/Media/BreadHub/Raisin Cinnamon"
 ```
 
 Credential resolution order:
