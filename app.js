@@ -45,11 +45,13 @@ analyzeForm.addEventListener("submit", (event) => {
   const url = document.getElementById("analyze-url").value.trim();
   const file = document.getElementById("analyze-upload").files[0];
   const offer = document.getElementById("analyze-offer").value.trim();
+  const website = document.getElementById("website-link").value.trim();
 
   renderSummary(analyzeSummary, [
     { label: "Reference URL", value: url },
     { label: "Uploaded Video", value: file?.name || "" },
     { label: "Offer / Product", value: offer },
+    { label: "Website", value: website },
   ]);
 
   analyzeWorkspace.classList.remove("hidden");
