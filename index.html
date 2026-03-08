@@ -15,17 +15,11 @@
   <body>
     <div class="page-shell">
       <header class="topbar">
-        <div class="topbar-copy">
+        <div>
           <p class="eyebrow">Thread 5 · Video Maker</p>
           <h1>UGC Maker</h1>
-          <p class="subcopy">
-            Manual-first reference analysis and product video creation for BreadHub.
-          </p>
         </div>
-        <div class="topbar-actions">
-          <a class="ghost-button" href="./preview-cinnamon.html">Watch Cinnamon V1</a>
-          <button class="primary-button" type="button">Use Current Template</button>
-        </div>
+        <a class="ghost-button" href="./preview-cinnamon.html">Watch Current Preview</a>
       </header>
 
       <nav class="tab-bar" id="tab-bar">
@@ -37,169 +31,163 @@
 
       <main class="workspace">
         <section class="tab-panel active" id="analyze-panel">
-          <section class="hero-card card">
-            <div>
-              <p class="eyebrow">Manual Intervention First</p>
-              <h2>Break down the winning reference before generating anything.</h2>
-              <p>
-                Paste a link or upload a video, then let the analyzer suggest what
-                likely made it work. You still decide what is worth copying and
-                what should become a reusable BreadHub template.
-              </p>
+          <section class="card">
+            <form id="analyze-form" class="flow-form">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Analyze</p>
+                  <h2>Reference Input</h2>
+                </div>
+              </div>
+
+              <label class="field-label" for="analyze-url">Reference video URL</label>
+              <input class="text-input" id="analyze-url" placeholder="Paste TikTok, Reel, or Shorts link" />
+
+              <label class="field-label" for="analyze-upload">Or upload reference video</label>
+              <input class="text-input file-input" id="analyze-upload" type="file" accept="video/*" />
+
+              <label class="field-label" for="analyze-offer">What do you offer?</label>
+              <textarea
+                class="text-area"
+                id="analyze-offer"
+                placeholder="Example: BreadHub offers cinnamon breads and donuts. We want short craving-first product videos for TikTok and Reels."
+              ></textarea>
+
+              <button class="primary-button" type="submit">Analyze</button>
+            </form>
+          </section>
+
+          <section class="card hidden" id="analyze-workspace">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Analyze</p>
+                <h2>Analysis Workspace</h2>
+              </div>
+              <span class="status-pill">Manual-first</span>
             </div>
-            <div class="hero-stats" id="hero-stats"></div>
-          </section>
 
-          <section class="main-grid">
-            <article class="card source-card">
-              <div class="section-head">
-                <div>
-                  <p class="eyebrow">Reference Source</p>
-                  <h3>Input</h3>
-                </div>
-                <span class="status-pill">Manual review on</span>
-              </div>
-              <div class="source-mode">
-                <button class="mode-pill active" type="button">Video link</button>
-                <button class="mode-pill" type="button">Upload file</button>
-                <button class="mode-pill" type="button">Drive folder</button>
-              </div>
-              <label class="field-label" for="reference-link">Reference link</label>
-              <input
-                class="text-input"
-                id="reference-link"
-                value="https://www.tiktok.com/@tineydc/video/7533213153828818183"
-              />
-              <label class="field-label" for="reference-notes">What to inspect</label>
-              <textarea class="text-area" id="reference-notes">Hook, caption placement, cut speed, close-up food reveals, CTA softness.</textarea>
-              <div class="action-row">
-                <button class="ghost-button" type="button">Analyze Reference</button>
-                <button class="ghost-button" type="button">Save as Template Draft</button>
-              </div>
-              <div class="reference-card" id="reference-card"></div>
-            </article>
+            <div class="summary-grid" id="analysis-summary"></div>
 
-            <article class="card insights-card">
-              <div class="section-head">
-                <div>
-                  <p class="eyebrow">Analyzer Output</p>
-                  <h3>Likely Performance Drivers</h3>
-                </div>
-                <span class="status-pill" id="reference-confidence">Human checked</span>
-              </div>
-              <div class="insight-grid" id="insight-grid"></div>
-            </article>
-          </section>
+            <div class="workspace-grid">
+              <article class="editor-card">
+                <label class="field-label" for="best-adaptation">Best adaptation for your product/service</label>
+                <textarea class="text-area tall" id="best-adaptation" placeholder="What style from the reference fits your product best?"></textarea>
+              </article>
 
-          <section class="main-grid lower-grid">
-            <article class="card">
-              <div class="section-head">
-                <div>
-                  <p class="eyebrow">Manual Checklist</p>
-                  <h3>Approve What Matters</h3>
-                </div>
-              </div>
-              <div class="checklist" id="checklist"></div>
-            </article>
+              <article class="editor-card">
+                <label class="field-label" for="execution-plan">Plan</label>
+                <textarea class="text-area tall" id="execution-plan" placeholder="What is the plan for the video structure, angle, and edit flow?"></textarea>
+              </article>
+            </div>
 
-            <article class="card">
-              <div class="section-head">
-                <div>
-                  <p class="eyebrow">Template Output</p>
-                  <h3>Reusable Structure</h3>
-                </div>
-                <span class="status-pill" id="template-pill">Food reveal template</span>
-              </div>
-              <div class="template-stack" id="template-stack"></div>
-            </article>
+            <div class="workspace-grid">
+              <article class="editor-card">
+                <label class="field-label" for="analysis-script">Script</label>
+                <textarea class="text-area tall" id="analysis-script" placeholder="Draft the script that should be generated from this reference."></textarea>
+              </article>
+
+              <article class="editor-card">
+                <label class="field-label" for="scene-plan">Scenes / B-roll needed</label>
+                <textarea class="text-area tall" id="scene-plan" placeholder="List the exact scenes, close-ups, proof shots, and B-roll needed."></textarea>
+              </article>
+            </div>
+
+            <div class="action-row">
+              <button class="ghost-button" id="send-to-create" type="button">Create</button>
+            </div>
           </section>
         </section>
 
         <section class="tab-panel" id="create-panel">
-          <section class="main-grid create-grid">
-            <article class="card">
+          <section class="card">
+            <form id="create-form" class="flow-form">
               <div class="section-head">
                 <div>
-                  <p class="eyebrow">Current Build</p>
-                  <h3>BreadHub Cinnamon V1</h3>
+                  <p class="eyebrow">Create</p>
+                  <h2>Asset Collection</h2>
                 </div>
-                <span class="status-pill">From real Drive assets</span>
               </div>
-              <div class="draft-meta" id="draft-meta"></div>
-              <div class="scene-list" id="scene-list"></div>
-              <div class="action-row">
-                <button class="ghost-button" type="button">Regenerate Script</button>
-                <button class="ghost-button" type="button">Revise Scenes</button>
-              </div>
-            </article>
 
-            <article class="card preview-card">
-              <div class="section-head">
-                <div>
-                  <p class="eyebrow">Finished Preview</p>
-                  <h3>Rendered Output</h3>
-                </div>
-                <a class="status-link" href="./preview-cinnamon.html">Open full preview</a>
+              <label class="field-label" for="create-drive-path">Drive folder or URL</label>
+              <input class="text-input" id="create-drive-path" placeholder="/Work/Media/BreadHub/Cinnamons or Drive link" />
+
+              <label class="field-label" for="create-products">Product / service details</label>
+              <textarea
+                class="text-area"
+                id="create-products"
+                placeholder="Describe the product, selling points, offer, target audience, and anything the video must mention."
+              ></textarea>
+
+              <label class="field-label" for="create-assets">Upload product images and clips</label>
+              <input class="text-input file-input" id="create-assets" type="file" accept="image/*,video/*" multiple />
+
+              <div class="toggle-grid">
+                <label class="toggle-item">
+                  <input id="enhance-images" type="checkbox" checked />
+                  <span>Enhance images</span>
+                </label>
+                <label class="toggle-item">
+                  <input id="remove-background" type="checkbox" />
+                  <span>Remove background where possible</span>
+                </label>
               </div>
-              <div class="video-shell">
-                <video
-                  controls
-                  playsinline
-                  preload="metadata"
-                  src="./preview-assets/breadhub-raisin-cinnamon-preview.mp4"
-                ></video>
-              </div>
-              <div class="preview-notes">
-                <p><strong>What this proves:</strong> the app can already use real Drive images and render a vertical ad.</p>
-                <p><strong>What changes next:</strong> subtitles, better voice, stronger hook, and real UGC clip structure.</p>
-              </div>
-            </article>
+
+              <fieldset class="audio-options">
+                <legend class="field-label">Audio</legend>
+                <label class="toggle-item">
+                  <input type="radio" name="audio-mode" value="regular-tts" checked />
+                  <span>Regular TTS</span>
+                </label>
+                <label class="toggle-item">
+                  <input type="radio" name="audio-mode" value="google-tts" />
+                  <span>Google voice generator API</span>
+                </label>
+                <label class="toggle-item">
+                  <input type="radio" name="audio-mode" value="manual-upload" />
+                  <span>Upload voiceover manually</span>
+                </label>
+              </fieldset>
+
+              <label class="field-label" for="voice-script">Voice script</label>
+              <textarea class="text-area" id="voice-script" placeholder="Paste the voice script or notes for the voiceover."></textarea>
+
+              <label class="field-label" for="voice-upload">Voiceover upload</label>
+              <input class="text-input file-input" id="voice-upload" type="file" accept="audio/*" />
+
+              <button class="primary-button" type="submit">Prepare Generator</button>
+            </form>
           </section>
 
-          <section class="main-grid lower-grid">
-            <article class="card">
-              <div class="section-head">
-                <div>
-                  <p class="eyebrow">Script Draft</p>
-                  <h3>Editable Voiceover</h3>
-                </div>
+          <section class="card hidden" id="create-workspace">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Create</p>
+                <h2>Generator Workspace</h2>
               </div>
-              <textarea class="text-area tall" id="script-draft"></textarea>
-            </article>
+              <span class="status-pill">Manual-first</span>
+            </div>
 
-            <article class="card">
-              <div class="section-head">
-                <div>
-                  <p class="eyebrow">Asset Fit</p>
-                  <h3>Cinnamon Pack</h3>
-                </div>
-              </div>
-              <div class="asset-list" id="asset-list"></div>
-            </article>
+            <div class="summary-grid" id="create-summary"></div>
+            <div class="asset-list" id="asset-list"></div>
+            <div class="action-row">
+              <button class="ghost-button" type="button">Stitch According to Template</button>
+            </div>
           </section>
         </section>
 
         <section class="tab-panel" id="templates-panel">
-          <section class="card">
-            <div class="section-head">
-              <div>
-                <p class="eyebrow">Template Library</p>
-                <h3>Minimal, reusable, product-ready</h3>
-              </div>
-            </div>
-            <div class="library-grid" id="library-grid"></div>
+          <section class="card empty-card">
+            <p class="eyebrow">Templates</p>
+            <h2>No templates yet</h2>
+            <p>Analyze a real reference first, then save the structure you want to reuse.</p>
           </section>
         </section>
 
         <section class="tab-panel" id="queue-panel">
-          <section class="card">
-            <div class="section-head">
-              <div>
-                <p class="eyebrow">Manual Queue</p>
-                <h3>What still needs your eye</h3>
-              </div>
-            </div>
-            <div class="queue-list" id="queue-list"></div>
+          <section class="card empty-card">
+            <p class="eyebrow">Queue</p>
+            <h2>No queued jobs yet</h2>
+            <p>Prepared generation requests will appear here once the real stitcher is connected.</p>
           </section>
         </section>
       </main>
