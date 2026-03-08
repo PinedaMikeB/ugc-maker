@@ -1,5 +1,6 @@
 const tabButtons = document.querySelectorAll(".tab-button");
 const tabPanels = document.querySelectorAll(".tab-panel");
+let lastAnalysisPayload = null;
 
 const analyzeForm = document.getElementById("analyze-form");
 const analyzeWorkspace = document.getElementById("analyze-workspace");
@@ -11,6 +12,11 @@ const createWorkspace = document.getElementById("create-workspace");
 const createSummary = document.getElementById("create-summary");
 const assetList = document.getElementById("asset-list");
 const analyzeButton = analyzeForm.querySelector('button[type="submit"]');
+const createButton = createForm.querySelector('button[type="submit"]');
+const generatedScript = document.getElementById("generated-script");
+const generatedScenes = document.getElementById("generated-scenes");
+const generatedAssets = document.getElementById("generated-assets");
+const generatedRenderNotes = document.getElementById("generated-render-notes");
 
 function activateTab(tabName) {
   tabButtons.forEach((button) => {
@@ -76,11 +82,14 @@ analyzeForm.addEventListener("submit", async (event) => {
       throw new Error(payload.error || "Analysis failed");
     }
 
+    lastAnalysisPayload = payload;
+
     renderSummary(analyzeSummary, [
       { label: "Reference", value: payload.reference?.title || url },
       { label: "Creator / Provider", value: [payload.reference?.creator, payload.reference?.provider].filter(Boolean).join(" · ") },
       { label: "Website", value: payload.website?.title || website },
       { label: "Analysis Type", value: payload.analysisType },
+      { label: "Catalog Matches", value: payload.website?.productCount ? `${payload.website.productCount} products found` : "" },
       { label: "Website Status", value: payload.websiteError ? `Skipped: ${payload.websiteError}` : website ? "Fetched" : "" },
     ]);
 
@@ -100,13 +109,17 @@ analyzeForm.addEventListener("submit", async (event) => {
 
 sendToCreateButton.addEventListener("click", () => {
   const analysisScript = document.getElementById("analysis-script").value.trim();
+  const analysisOffer = document.getElementById("analyze-offer").value.trim();
   if (analysisScript) {
     document.getElementById("voice-script").value = analysisScript;
+  }
+  if (analysisOffer && !document.getElementById("create-products").value.trim()) {
+    document.getElementById("create-products").value = analysisOffer;
   }
   activateTab("create");
 });
 
-createForm.addEventListener("submit", (event) => {
+createForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const drivePath = document.getElementById("create-drive-path").value.trim();
@@ -117,32 +130,72 @@ createForm.addEventListener("submit", (event) => {
     document.querySelector('input[name="audio-mode"]:checked')?.value || "regular-tts";
   const enhanceImages = document.getElementById("enhance-images").checked;
   const removeBackground = document.getElementById("remove-background").checked;
+  const voiceScript = document.getElementById("voice-script").value.trim();
 
-  renderSummary(createSummary, [
-    { label: "Drive / Source", value: drivePath },
-    { label: "Product / Service", value: productDetails },
-    { label: "Audio Mode", value: audioMode },
-    { label: "Voice Upload", value: voiceUpload?.name || "" },
-    {
-      label: "Enhancements",
-      value: [enhanceImages ? "enhance images" : "", removeBackground ? "remove background" : ""]
-        .filter(Boolean)
-        .join(" · "),
-    },
-  ]);
+  createButton.disabled = true;
+  createButton.textContent = "Preparing...";
 
-  assetList.innerHTML = files.length
-    ? files
-        .map(
-          (file) => `
-            <article class="asset-item">
-              <strong>${file.name}</strong>
-              <span>${file.type || "unknown type"} · ${Math.round(file.size / 1024)} KB</span>
-            </article>
-          `
-        )
-        .join("")
-    : `<article class="asset-item"><strong>No uploaded files yet</strong><span>Add images or clips to continue.</span></article>`;
+  try {
+    const response = await fetch("/.netlify/functions/prepare-generator", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        source: drivePath,
+        productDetails,
+        audioMode,
+        voiceScript,
+        uploadedFileNames: files.map((file) => file.name),
+        analysis: lastAnalysisPayload,
+        enhanceImages,
+        removeBackground,
+      }),
+    });
+    const payload = await response.json();
+    if (!response.ok) {
+      throw new Error(payload.error || "Generator prep failed");
+    }
 
-  createWorkspace.classList.remove("hidden");
+    renderSummary(createSummary, [
+      { label: "Drive / Source", value: drivePath },
+      { label: "Product / Service", value: productDetails },
+      { label: "Audio Mode", value: audioMode },
+      { label: "Voice Upload", value: voiceUpload?.name || "" },
+      { label: "Catalog Matches", value: payload.relevantProducts?.map((product) => product.name).join(" · ") || "" },
+      {
+        label: "Enhancements",
+        value: [enhanceImages ? "enhance images" : "", removeBackground ? "remove background" : ""]
+          .filter(Boolean)
+          .join(" · "),
+      },
+    ]);
+
+    assetList.innerHTML = files.length
+      ? files
+          .map(
+            (file) => `
+              <article class="asset-item">
+                <strong>${file.name}</strong>
+                <span>${file.type || "unknown type"} · ${Math.round(file.size / 1024)} KB</span>
+              </article>
+            `
+          )
+          .join("")
+      : `<article class="asset-item"><strong>No uploaded files yet</strong><span>${payload.sourceAccess}</span></article>`;
+
+    generatedScript.value = payload.generatorScript || "";
+    generatedScenes.value = payload.shotPlan || "";
+    generatedAssets.value = payload.assetChecklist || "";
+    generatedRenderNotes.value = payload.renderPlan || "";
+
+    if (!voiceScript && payload.generatorScript) {
+      document.getElementById("voice-script").value = payload.generatorScript;
+    }
+
+    createWorkspace.classList.remove("hidden");
+  } catch (error) {
+    alert(error instanceof Error ? error.message : "Generator prep failed");
+  } finally {
+    createButton.disabled = false;
+    createButton.textContent = "Prepare Generator";
+  }
 });

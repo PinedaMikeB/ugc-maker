@@ -176,6 +176,31 @@
 
             <div class="summary-grid" id="create-summary"></div>
             <div class="asset-list" id="asset-list"></div>
+
+            <div class="workspace-grid">
+              <article class="editor-card">
+                <label class="field-label" for="generated-script">Generated script</label>
+                <textarea class="text-area tall" id="generated-script" readonly placeholder="A real script draft will appear here after you prepare the generator."></textarea>
+              </article>
+
+              <article class="editor-card">
+                <label class="field-label" for="generated-scenes">Generated scenes / shot plan</label>
+                <textarea class="text-area tall" id="generated-scenes" readonly placeholder="The scene and shot list will appear here."></textarea>
+              </article>
+            </div>
+
+            <div class="workspace-grid">
+              <article class="editor-card">
+                <label class="field-label" for="generated-assets">Asset checklist</label>
+                <textarea class="text-area" id="generated-assets" readonly placeholder="The exact assets needed for this template will appear here."></textarea>
+              </article>
+
+              <article class="editor-card">
+                <label class="field-label" for="generated-render-notes">Render notes / source access</label>
+                <textarea class="text-area" id="generated-render-notes" readonly placeholder="Source access status and render notes will appear here."></textarea>
+              </article>
+            </div>
+
             <div class="action-row">
               <button class="ghost-button" type="button">Stitch According to Template</button>
             </div>
