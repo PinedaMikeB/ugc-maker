@@ -10,6 +10,7 @@ const createForm = document.getElementById("create-form");
 const createWorkspace = document.getElementById("create-workspace");
 const createSummary = document.getElementById("create-summary");
 const assetList = document.getElementById("asset-list");
+const analyzeButton = analyzeForm.querySelector('button[type="submit"]');
 
 function activateTab(tabName) {
   tabButtons.forEach((button) => {
@@ -39,7 +40,7 @@ function renderSummary(root, entries) {
     .join("");
 }
 
-analyzeForm.addEventListener("submit", (event) => {
+analyzeForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const url = document.getElementById("analyze-url").value.trim();
@@ -47,14 +48,54 @@ analyzeForm.addEventListener("submit", (event) => {
   const offer = document.getElementById("analyze-offer").value.trim();
   const website = document.getElementById("website-link").value.trim();
 
-  renderSummary(analyzeSummary, [
-    { label: "Reference URL", value: url },
-    { label: "Uploaded Video", value: file?.name || "" },
-    { label: "Offer / Product", value: offer },
-    { label: "Website", value: website },
-  ]);
+  if (!url && !file) {
+    alert("Add a reference URL or upload a reference video first.");
+    return;
+  }
 
-  analyzeWorkspace.classList.remove("hidden");
+  if (file && !url) {
+    alert("URL-based analysis is wired first. Upload-only analysis still needs the backend file pipeline.");
+    return;
+  }
+
+  analyzeButton.disabled = true;
+  analyzeButton.textContent = "Analyzing...";
+
+  try {
+    const response = await fetch("/.netlify/functions/analyze-reference", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        referenceUrl: url,
+        offer,
+        websiteUrl: website,
+      }),
+    });
+    const payload = await response.json();
+    if (!response.ok) {
+      throw new Error(payload.error || "Analysis failed");
+    }
+
+    renderSummary(analyzeSummary, [
+      { label: "Reference", value: payload.reference?.title || url },
+      { label: "Creator / Provider", value: [payload.reference?.creator, payload.reference?.provider].filter(Boolean).join(" · ") },
+      { label: "Website", value: payload.website?.title || website },
+      { label: "Analysis Type", value: payload.analysisType },
+      { label: "Website Status", value: payload.websiteError ? `Skipped: ${payload.websiteError}` : website ? "Fetched" : "" },
+    ]);
+
+    document.getElementById("best-adaptation").value = payload.generated?.bestAdaptation || "";
+    document.getElementById("execution-plan").value = payload.generated?.plan || "";
+    document.getElementById("analysis-script").value = payload.generated?.script || "";
+    document.getElementById("scene-plan").value = payload.generated?.scenes || "";
+
+    analyzeWorkspace.classList.remove("hidden");
+  } catch (error) {
+    alert(error instanceof Error ? error.message : "Analysis failed");
+  } finally {
+    analyzeButton.disabled = false;
+    analyzeButton.textContent = "Analyze";
+  }
 });
 
 sendToCreateButton.addEventListener("click", () => {
