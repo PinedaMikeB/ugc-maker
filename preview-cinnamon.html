@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BreadHub Cinnamon Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #28180d;
+        --paper: #fff7ed;
+        --accent: #dd7a27;
+        --line: rgba(40, 24, 13, 0.12);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Manrope", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(221, 122, 39, 0.26), transparent 24%),
+          linear-gradient(180deg, #fff8ef 0%, #f4dfc6 100%);
+      }
+      .shell {
+        width: min(1200px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 32px 0 56px;
+      }
+      .hero, .notes {
+        background: rgba(255, 251, 245, 0.84);
+        border: 1px solid rgba(255,255,255,0.65);
+        border-radius: 28px;
+        padding: 24px;
+        box-shadow: 0 24px 64px rgba(87, 46, 15, 0.12);
+        backdrop-filter: blur(20px);
+      }
+      .hero {
+        display: grid;
+        grid-template-columns: 340px 1fr;
+        gap: 24px;
+        align-items: start;
+      }
+      .eyebrow {
+        margin: 0 0 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        font-size: 0.78rem;
+        font-weight: 800;
+        color: #a24c17;
+      }
+      h1, h2 { margin: 0; font-family: "Fraunces", serif; }
+      h1 { font-size: clamp(2.2rem, 4vw, 3.6rem); margin-bottom: 14px; }
+      p { line-height: 1.6; }
+      .video-frame {
+        background: #170d06;
+        border-radius: 32px;
+        padding: 12px;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+      }
+      video {
+        display: block;
+        width: 100%;
+        aspect-ratio: 9 / 16;
+        object-fit: cover;
+        border-radius: 24px;
+        background: #000;
+      }
+      .notes {
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .note {
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 16px;
+        background: rgba(255,255,255,0.78);
+      }
+      .note strong {
+        display: block;
+        margin-bottom: 8px;
+      }
+      a {
+        color: #8f3f11;
+        font-weight: 700;
+      }
+      @media (max-width: 900px) {
+        .hero, .notes {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">BreadHub UGC Preview</p>
+          <h1>Cinnamon Line V1</h1>
+          <p>
+            First real preview generated from the images in your Google Drive
+            folder. This version is a simple voiceover + vertical promo cut so
+            you can judge the style before we automate the full pipeline.
+          </p>
+          <p>
+            Source path: <strong>/Work/Media/BreadHub/Cinnamons</strong>
+          </p>
+          <p>
+            Asset file:
+            <a href="./preview-assets/breadhub-raisin-cinnamon-preview.mp4">
+              breadhub-raisin-cinnamon-preview.mp4
+            </a>
+          </p>
+        </div>
+        <div class="video-frame">
+          <video controls playsinline preload="metadata" src="./preview-assets/breadhub-raisin-cinnamon-preview.mp4"></video>
+        </div>
+      </section>
+
+      <section class="notes">
+        <article class="note">
+          <strong>What This Proves</strong>
+          <p>The app can already read your Drive images, download them locally, generate a voiceover, and render a vertical MP4 preview.</p>
+        </article>
+        <article class="note">
+          <strong>What Is Still Missing</strong>
+          <p>Real clip selection, better script variations, captions timed to speech, background music, and approval workflow.</p>
+        </article>
+        <article class="note">
+          <strong>Next Quality Step</strong>
+          <p>Use actual short product clips instead of only still images, then switch from this promo style into a more believable UGC edit.</p>
+        </article>
+      </section>
+    </div>
+  </body>
+</html>

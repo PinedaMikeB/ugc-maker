@@ -1,3 +1,5 @@
 .netlify/
 .tmp/
 node_modules/
+.venv/
+runtime/

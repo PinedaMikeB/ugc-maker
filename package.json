@@ -7,7 +7,9 @@
     "drive:auth-status": "node scripts/drive-auth-status.mjs",
     "drive:list-folders": "node scripts/drive-list-folders.mjs",
     "drive:list-inbox": "node scripts/drive-list-inbox.mjs",
-    "drive:list-path": "node scripts/drive-list-path.mjs"
+    "drive:list-path": "node scripts/drive-list-path.mjs",
+    "drive:download-path": "node scripts/drive-download-path.mjs",
+    "preview:cinnamon": "node scripts/create-cinnamon-preview.mjs"
   },
   "dependencies": {
     "googleapis": "^157.0.0"
