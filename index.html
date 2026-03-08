@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UGC Maker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Thread 5 · Video Maker</p>
+          <h1>UGC Maker</h1>
+          <p class="subcopy">
+            Turn one Google Drive folder into a product-specific BreadHub-style
+            promo video pipeline.
+          </p>
+        </div>
+        <div class="topbar-actions">
+          <button class="ghost-button" type="button">Connect Google Drive</button>
+          <button class="primary-button" type="button">Create Render Job</button>
+        </div>
+      </header>
+
+      <main class="dashboard">
+        <section class="hero card">
+          <div class="hero-copy">
+            <p class="eyebrow">Plan A MVP</p>
+            <h2>Folder in. Script out. Video ready.</h2>
+            <p>
+              This UI is designed for the workflow you described: upload clips to
+              a single Drive folder per product, let the app analyze the footage,
+              draft the script, and queue the final vertical video.
+            </p>
+          </div>
+          <div class="hero-metrics" id="metrics"></div>
+        </section>
+
+        <section class="inbox card">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Drive Inbox</p>
+              <h3>Product Folders</h3>
+            </div>
+            <span class="status-pill">Polling every 5 min</span>
+          </div>
+          <div class="folder-drop">
+            <p>Drop new product folders into your Google Drive inbox.</p>
+            <span>1 folder = 1 product = 1 render job</span>
+          </div>
+          <div class="folder-list" id="folder-list"></div>
+        </section>
+
+        <section class="pipeline card">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Pipeline</p>
+              <h3>Selected Folder</h3>
+            </div>
+            <button class="ghost-button" id="sync-button" type="button">
+              Sync Folder
+            </button>
+          </div>
+          <div class="selection-overview" id="selection-overview"></div>
+          <div class="stages" id="stages"></div>
+          <div class="pipeline-actions">
+            <button class="ghost-button" id="analyze-button" type="button">
+              Analyze Clips
+            </button>
+            <button class="ghost-button" id="script-button" type="button">
+              Draft Script
+            </button>
+            <button class="primary-button" id="render-button" type="button">
+              Queue Render
+            </button>
+          </div>
+        </section>
+
+        <section class="storyboard card">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Auto Script</p>
+              <h3>Influencer Story Flow</h3>
+            </div>
+            <span class="status-pill" id="script-tone">Warm, playful</span>
+          </div>
+          <div class="script-block" id="script-block"></div>
+          <div class="shot-grid" id="shot-grid"></div>
+        </section>
+
+        <section class="queue card">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Render Queue</p>
+              <h3>Output Timeline</h3>
+            </div>
+            <span class="status-pill">Firebase Storage</span>
+          </div>
+          <div class="queue-list" id="queue-list"></div>
+        </section>
+
+        <section class="contract card">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Backend Contract</p>
+              <h3>Java + Firebase Handshake</h3>
+            </div>
+          </div>
+          <div class="contract-grid">
+            <article>
+              <h4>Drive Ingest</h4>
+              <p>
+                Poll a Drive parent folder, detect subfolders, and register
+                each product folder as a new job.
+              </p>
+              <code>POST /api/jobs/sync-drive</code>
+            </article>
+            <article>
+              <h4>Clip Analysis</h4>
+              <p>
+                Extract transcripts, keyframes, clip tags, and confidence
+                scores before drafting the script.
+              </p>
+              <code>POST /api/jobs/:jobId/analyze</code>
+            </article>
+            <article>
+              <h4>Script Draft</h4>
+              <p>
+                Turn analyzed clips into a hook, tasting beats, proof points,
+                and CTA script.
+              </p>
+              <code>POST /api/jobs/:jobId/script</code>
+            </article>
+            <article>
+              <h4>Render</h4>
+              <p>
+                Assemble vertical scenes, captions, music, and export the final
+                MP4 to Firebase Storage.
+              </p>
+              <code>POST /api/jobs/:jobId/render</code>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
