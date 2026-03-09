@@ -12,6 +12,7 @@
     "preview:cinnamon": "node scripts/create-cinnamon-preview.mjs"
   },
   "dependencies": {
-    "googleapis": "^157.0.0"
+    "googleapis": "^157.0.0",
+    "openai": "^6.27.0"
   }
 }

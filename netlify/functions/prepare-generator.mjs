@@ -18,7 +18,7 @@ export async function handler(event) {
 
   try {
     const body = JSON.parse(event.body || "{}");
-    const result = prepareGeneratorInput({
+    const result = await prepareGeneratorInput({
       source: body.source,
       productDetails: body.productDetails,
       audioMode: body.audioMode,

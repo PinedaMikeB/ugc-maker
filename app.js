@@ -89,6 +89,7 @@ analyzeForm.addEventListener("submit", async (event) => {
       { label: "Creator / Provider", value: [payload.reference?.creator, payload.reference?.provider].filter(Boolean).join(" · ") },
       { label: "Website", value: payload.website?.title || website },
       { label: "Analysis Type", value: payload.analysisType },
+      { label: "Script Engine", value: payload.scriptEngine },
       { label: "Catalog Matches", value: payload.website?.productCount ? `${payload.website.productCount} products found` : "" },
       { label: "Website Status", value: payload.websiteError ? `Skipped: ${payload.websiteError}` : website ? "Fetched" : "" },
     ]);
@@ -159,6 +160,7 @@ createForm.addEventListener("submit", async (event) => {
       { label: "Drive / Source", value: drivePath },
       { label: "Product / Service", value: productDetails },
       { label: "Audio Mode", value: audioMode },
+      { label: "Script Engine", value: payload.scriptEngine || lastAnalysisPayload?.scriptEngine || "heuristic" },
       { label: "Voice Upload", value: voiceUpload?.name || "" },
       { label: "Catalog Matches", value: payload.relevantProducts?.map((product) => product.name).join(" · ") || "" },
       {
