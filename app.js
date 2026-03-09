@@ -52,6 +52,8 @@ analyzeForm.addEventListener("submit", async (event) => {
   const url = document.getElementById("analyze-url").value.trim();
   const file = document.getElementById("analyze-upload").files[0];
   const offer = document.getElementById("analyze-offer").value.trim();
+  const heroProduct = document.getElementById("hero-product").value.trim();
+  const customerPain = document.getElementById("customer-pain").value.trim();
   const website = document.getElementById("website-link").value.trim();
 
   if (!url && !file) {
@@ -61,6 +63,11 @@ analyzeForm.addEventListener("submit", async (event) => {
 
   if (file && !url) {
     alert("URL-based analysis is wired first. Upload-only analysis still needs the backend file pipeline.");
+    return;
+  }
+
+  if (!heroProduct) {
+    alert("Add the hero product first so the script stays specific.");
     return;
   }
 
@@ -74,6 +81,8 @@ analyzeForm.addEventListener("submit", async (event) => {
       body: JSON.stringify({
         referenceUrl: url,
         offer,
+        heroProduct,
+        customerPain,
         websiteUrl: website,
       }),
     });
@@ -88,6 +97,7 @@ analyzeForm.addEventListener("submit", async (event) => {
       { label: "Reference", value: payload.reference?.title || url },
       { label: "Creator / Provider", value: [payload.reference?.creator, payload.reference?.provider].filter(Boolean).join(" · ") },
       { label: "Website", value: payload.website?.title || website },
+      { label: "Hero Product", value: payload.heroProduct || heroProduct },
       { label: "Analysis Type", value: payload.analysisType },
       { label: "Script Engine", value: payload.scriptEngine },
       { label: "Catalog Matches", value: payload.website?.productCount ? `${payload.website.productCount} products found` : "" },
@@ -111,11 +121,17 @@ analyzeForm.addEventListener("submit", async (event) => {
 sendToCreateButton.addEventListener("click", () => {
   const analysisScript = document.getElementById("analysis-script").value.trim();
   const analysisOffer = document.getElementById("analyze-offer").value.trim();
+  const heroProduct = document.getElementById("hero-product").value.trim();
   if (analysisScript) {
     document.getElementById("voice-script").value = analysisScript;
   }
-  if (analysisOffer && !document.getElementById("create-products").value.trim()) {
-    document.getElementById("create-products").value = analysisOffer;
+  if (!document.getElementById("create-products").value.trim()) {
+    document.getElementById("create-products").value = [
+      analysisOffer,
+      heroProduct ? `Hero product: ${heroProduct}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
   }
   activateTab("create");
 });
@@ -143,6 +159,7 @@ createForm.addEventListener("submit", async (event) => {
       body: JSON.stringify({
         source: drivePath,
         productDetails,
+        heroProduct: lastAnalysisPayload?.heroProduct || "",
         audioMode,
         voiceScript,
         uploadedFileNames: files.map((file) => file.name),

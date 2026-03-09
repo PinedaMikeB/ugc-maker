@@ -21,6 +21,8 @@ export async function handler(event) {
     const result = await analyzeInput({
       referenceUrl: body.referenceUrl,
       offer: body.offer,
+      heroProduct: body.heroProduct,
+      customerPain: body.customerPain,
       websiteUrl: body.websiteUrl,
     });
     return json(200, result);

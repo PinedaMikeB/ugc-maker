@@ -21,6 +21,7 @@ export async function handler(event) {
     const result = await prepareGeneratorInput({
       source: body.source,
       productDetails: body.productDetails,
+      heroProduct: body.heroProduct,
       audioMode: body.audioMode,
       voiceScript: body.voiceScript,
       uploadedFileNames: body.uploadedFileNames || [],
