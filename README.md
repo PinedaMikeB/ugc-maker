@@ -5,7 +5,8 @@ Frontend-first MVP for a BreadHub-style UGC video automation workflow.
 ## Script engine
 
 - Default: heuristic script generation
-- Optional: OpenAI-powered script generation when `OPENAI_API_KEY` is set
+- Preferred AI: Gemini when `GEMINI_API_KEY` is set
+- Optional fallback AI: OpenAI when `OPENAI_API_KEY` is set
 
 The app uses deterministic website and catalog analysis first, then upgrades the actual UGC script/adaptation output with AI when a model key is available.
 
