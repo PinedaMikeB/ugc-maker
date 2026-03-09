@@ -54,6 +54,7 @@ analyzeForm.addEventListener("submit", async (event) => {
   const offer = document.getElementById("analyze-offer").value.trim();
   const heroProduct = document.getElementById("hero-product").value.trim();
   const customerPain = document.getElementById("customer-pain").value.trim();
+  const creatorPersona = document.getElementById("creator-persona").value.trim();
   const website = document.getElementById("website-link").value.trim();
 
   if (!url && !file) {
@@ -83,6 +84,7 @@ analyzeForm.addEventListener("submit", async (event) => {
         offer,
         heroProduct,
         customerPain,
+        creatorPersona,
         websiteUrl: website,
       }),
     });
@@ -98,12 +100,14 @@ analyzeForm.addEventListener("submit", async (event) => {
       { label: "Creator / Provider", value: [payload.reference?.creator, payload.reference?.provider].filter(Boolean).join(" · ") },
       { label: "Website", value: payload.website?.title || website },
       { label: "Hero Product", value: payload.heroProduct || heroProduct },
+      { label: "Persona", value: payload.creatorPersona || creatorPersona },
       { label: "Analysis Type", value: payload.analysisType },
       { label: "Script Engine", value: payload.scriptEngine },
       { label: "Catalog Matches", value: payload.website?.productCount ? `${payload.website.productCount} products found` : "" },
       { label: "Website Status", value: payload.websiteError ? `Skipped: ${payload.websiteError}` : website ? "Fetched" : "" },
     ]);
 
+    document.getElementById("reference-breakdown").value = payload.generated?.referenceBreakdown || "";
     document.getElementById("best-adaptation").value = payload.generated?.bestAdaptation || "";
     document.getElementById("execution-plan").value = payload.generated?.plan || "";
     document.getElementById("analysis-script").value = payload.generated?.script || "";

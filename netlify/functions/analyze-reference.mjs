@@ -23,6 +23,7 @@ export async function handler(event) {
       offer: body.offer,
       heroProduct: body.heroProduct,
       customerPain: body.customerPain,
+      creatorPersona: body.creatorPersona,
       websiteUrl: body.websiteUrl,
     });
     return json(200, result);
