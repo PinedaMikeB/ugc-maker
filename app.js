@@ -46,6 +46,20 @@ function renderSummary(root, entries) {
     .join("");
 }
 
+async function parseJsonResponse(response) {
+  const contentType = response.headers.get("content-type") || "";
+  const text = await response.text();
+  if (!contentType.includes("application/json")) {
+    const condensed = text.replace(/\s+/g, " ").trim().slice(0, 180);
+    throw new Error(`Server returned ${response.status}. ${condensed || "Non-JSON response."}`);
+  }
+  const payload = JSON.parse(text);
+  if (!response.ok) {
+    throw new Error(payload.error || "Request failed");
+  }
+  return payload;
+}
+
 analyzeForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -88,10 +102,7 @@ analyzeForm.addEventListener("submit", async (event) => {
         websiteUrl: website,
       }),
     });
-    const payload = await response.json();
-    if (!response.ok) {
-      throw new Error(payload.error || "Analysis failed");
-    }
+    const payload = await parseJsonResponse(response);
 
     lastAnalysisPayload = payload;
 
@@ -172,10 +183,7 @@ createForm.addEventListener("submit", async (event) => {
         removeBackground,
       }),
     });
-    const payload = await response.json();
-    if (!response.ok) {
-      throw new Error(payload.error || "Generator prep failed");
-    }
+    const payload = await parseJsonResponse(response);
 
     renderSummary(createSummary, [
       { label: "Drive / Source", value: drivePath },
